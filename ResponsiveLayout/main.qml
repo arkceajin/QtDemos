@@ -1,57 +1,61 @@
 import QtQuick 2.6
 import QtQuick.Window 2.2
+import QtQuick.Controls 2.3
 import QtQuick.Controls 1.4
 
 Window {
     id: window
     visible: true
-    readonly property int defaultWidth: 300
     readonly property int responsiveWidth: 500
-    width: defaultWidth
-    height: 500
+    width: 300; height: 500
 
-    Row {
+    SwipeView  {
+        id: swipeView
+        currentIndex: 1
         anchors.fill: parent
         states: [
             State {
-                when: window.width >= responsiveWidth // Change responsive layout base on the width
-                // When the current width is bigger than responsiveWidth,
-                // following properties will be changed.
-                PropertyChanges { 
-                    target: contacts; width: defaultWidth
-                }
-                PropertyChanges {
-                    target: chat; width: window.width - contacts.width; visible: true
-                }
-                PropertyChanges {
-                    target: showChat; visible: false
-                }
+                when: window.width >= responsiveWidth
+                ParentChange { target: contacts; parent: contactsContainer; }
+                ParentChange { target: chat; parent: chatContainer; }
+                PropertyChanges { target: indicator; visible: hide }
             }
         ]
-        Rectangle {
-            id: contacts
-            color: "lightblue"; border.width: 5; border.color: "white"
-            width: parent.width; height: parent.height
-            Button {
-                id: showChat
-                anchors.bottom: parent.bottom
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.bottomMargin: parent.border.width
-                text: "Show chat"
-                onClicked: window.width = responsiveWidth
+        Item {
+            Rectangle {
+                id: contacts
+                anchors.fill: parent
+                color: "lightblue"; border.width: 5; border.color: "white"
             }
         }
-        Rectangle{
-            id: chat
-            color: "lightgray"; border.width: 5; border.color: "white"
-            visible: false; height: parent.height
-            Button {
-                anchors.bottom: parent.bottom
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.bottomMargin: parent.border.width
-                text: "Hide chat"
-                onClicked: window.width = defaultWidth
+        Item {
+            Rectangle{
+                id: chat
+                anchors.fill: parent
+                color: "lightgray"; border.width: 5; border.color: "white"
             }
+        }
+    }
+
+    PageIndicator {
+        id: indicator
+        count: swipeView.count
+        currentIndex: swipeView.currentIndex
+        anchors.bottom: swipeView.bottom
+        anchors.bottomMargin: 10
+        anchors.horizontalCenter: swipeView.horizontalCenter
+    }
+
+    Row {
+        id: splitView
+        anchors.fill: parent
+        Item {
+            id: contactsContainer
+            width: parent.width / 2; height: parent.height
+        }
+        Item {
+            id: chatContainer
+            width: parent.width / 2; height: parent.height
         }
     }
 }
