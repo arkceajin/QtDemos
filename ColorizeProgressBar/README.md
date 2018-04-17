@@ -5,4 +5,8 @@
 
 
 ### Result on Windows 7
+Green: Normal QProgressBar
+
+Red: ColorizeProgressBar
+
 ![text](./win7.png)
