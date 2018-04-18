@@ -4,6 +4,8 @@
 #include <QProgressBar>
 #include <QGraphicsEffect>
 #include <QPainter>
+#include <QStyle>
+#include <QStyleOptionProgressBar>
 
 class ColorizeProgressBar : public QProgressBar
 {
@@ -11,11 +13,12 @@ class ColorizeProgressBar : public QProgressBar
 public:
     explicit ColorizeProgressBar(QWidget *parent = Q_NULLPTR) :
         QProgressBar(parent),
-        mColorize(new Colorize)
+        mColorize(new Colorize(this)),
+        mPercent(0.0f)
     {
         setGraphicsEffect(mColorize);
         connect(this, & QProgressBar::valueChanged, [=](int value){
-            mColorize->percent = (float)value / (maximum() - minimum());
+            mPercent = (float)value / (maximum() - minimum());
         });
     }
 
@@ -27,18 +30,61 @@ public:
         mColorize->strength = strength;
     }
 
+    QRectF getGrooveRect() const {
+        StyleOptionProgressBar option;
+        option.initFrom(this);
+        return style()->subElementRect(QStyle::SE_ProgressBarGroove, &option, this);
+    }
+
+protected:
+    void resizeEvent(QResizeEvent *e) {
+        Q_UNUSED(e)
+        QRectF rect = getGrooveRect();
+        if(orientation() == Qt::Horizontal)
+            rect.setWidth(rect.width() * mPercent);
+        else
+            rect.setHeight(rect.height() * mPercent);
+        mColorize->effectRect = rect;
+    }
+
 private:
+    /**
+     * @brief The StyleOptionProgressBar class
+     * Reimplement the initFrom for QProgressBar,
+     * to getting the correct contents rect info.
+     */
+    class StyleOptionProgressBar : public QStyleOptionProgressBar {
+    public:
+        using QStyleOptionProgressBar::QStyleOptionProgressBar;
+
+        void initFrom(const ColorizeProgressBar* w) {
+            init(w);
+            minimum = w->minimum();
+            maximum = w->maximum();
+            progress = w->value();
+            text = w->text();
+            textAlignment = w->alignment();
+            textVisible = w->isTextVisible();
+            orientation = w->orientation();
+            invertedAppearance = w->invertedAppearance();
+        }
+    };
+
+    /**
+     * @brief The Colorize class
+     * Customize the color of QProgressBar
+     */
     class Colorize : public QGraphicsEffect {
     public:
-        explicit Colorize() :
-            QGraphicsEffect(),
+        explicit Colorize(QObject *parent = Q_NULLPTR) :
+            QGraphicsEffect(parent),
             strength(1),
             color(Qt::red),
-            margins(0.5, 0.5, 30, 0.5) // have to adjust base on OS
+            effectRect()
         { }
         quint32 strength;
         QColor color;
-        float percent;
+        QRectF effectRect;
 
     protected:
         void draw(QPainter* painter) {
@@ -72,9 +118,7 @@ private:
             QPainter destPainter(&destImage);
             grayscale(srcImage, destImage, srcImage.rect());
             destPainter.setCompositionMode(QPainter::CompositionMode_Screen);
-            QRectF rect = QRectF(srcImage.rect()).marginsRemoved(margins);
-            rect.setWidth(rect.width() * percent);
-            destPainter.fillRect(rect, color);
+            destPainter.fillRect(effectRect, color);
             destPainter.end();
 
             // alpha blending srcImage and destImage
@@ -92,11 +136,10 @@ private:
 
             painter->drawImage(dest, destImage);
         }
-    private:
-        const QMarginsF margins;
     };
-private:
-    Colorize* mColorize;
+
+    Colorize*   mColorize;
+    float       mPercent;
 
     static void grayscale(const QImage &image, QImage &dest, const QRect& rect = QRect())
     {
