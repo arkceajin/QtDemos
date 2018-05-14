@@ -2,4 +2,4 @@
 # Screen Capture
 
 * Frequently taking screenshot.
-* Using `Alt + s` to save as image.
+* Using `Alt + s` key to save as image.
