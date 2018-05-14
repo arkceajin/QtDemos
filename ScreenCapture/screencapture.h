@@ -24,9 +24,12 @@ public:
 
         setScaledContents(true);
         connect(&mTimer, &QTimer::timeout, [=](){
-            setWindowOpacity(0);
+            QWidget* w = QApplication::activeWindow();
+            if(w != Q_NULLPTR)
+                w->setWindowOpacity(0);
             mBuffer = QApplication::primaryScreen()->grabWindow(mWId);
-            setWindowOpacity(1);
+            if(w != Q_NULLPTR)
+                w->setWindowOpacity(1);
             setPixmap(mBuffer);
         });
         start();
