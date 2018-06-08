@@ -9,3 +9,6 @@ From: https://stackoverflow.com/questions/49745226/create-a-responsive-ui-like-t
 
 ### 3. Colorize Progress Bar
 From: https://stackoverflow.com/questions/49867207/how-do-i-change-the-state-of-a-qprogressbar
+
+### 4. Shooting game
+From: https://stackoverflow.com/questions/50753042/qgraphicspixmapitem-collision-detect-no-match-for-operator-operand-type-is
