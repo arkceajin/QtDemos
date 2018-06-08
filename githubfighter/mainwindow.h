@@ -95,7 +95,7 @@ public slots:
         foreach (Bullet* b, bullets) {
             foreach (Github* g, githubs) {
                 if(g != Q_NULLPTR && b != Q_NULLPTR)
-                    if(QRectF(b->pos(), b->boundingRect().size()).intersects(QRectF(g->pos(), g->boundingRect().size()))) {
+                    if(g->collidesWithItem(b)) {
                         bullets.removeOne(b);
                         githubs.removeOne(g);
                         dead.insert(b);
