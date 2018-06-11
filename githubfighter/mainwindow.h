@@ -60,13 +60,43 @@ public:
     virtual ~Scene() {}
 
     void start() {
+        mFighter.setPos(sceneRect().center());
         mFighter.setActive(true);
         mFighter.show();
         mClock.start(Interval);
     }
 
+    void stop() {
+        mClock.stop();
+    }
+
 public slots:
     void handler() {
+        QPointF offset(0, 0);
+        foreach (int key, mPressedKeys) {
+            switch (key) {
+            case Qt::Key_Up:
+                offset += QPointF(0, -Speed);
+                break;
+            case Qt::Key_Down:
+                offset += QPointF(0, Speed);
+                break;
+            case Qt::Key_Left:
+                offset += QPointF(-Speed, 0);
+                break;
+            case Qt::Key_Right:
+                offset += QPointF(Speed, 0);
+                break;
+            case Qt::Key_X:
+                addBullet();
+                break;
+            default:
+                break;
+            }
+        }
+
+        mFighter.moveBy(offset.x(), offset.y());
+
         QVector<Bullet*> bullets;
         QVector<Github*> githubs;
         foreach (QGraphicsItem* item, items()) {
@@ -82,8 +112,12 @@ public slots:
                 }
             } else if (g != Q_NULLPTR) {
                 if(g->y() < height()) {
-                    g->moveBy(0, Speed);
-                    githubs.push_back(g);
+                    if(g->collidesWithItem(&mFighter)) {
+                        stop();
+                    } else {
+                        g->moveBy(0, Speed);
+                        githubs.push_back(g);
+                    }
                 } else {
                     removeItem(g);
                     delete g;
@@ -103,6 +137,7 @@ public slots:
                     }
             }
         }
+
         foreach (QGraphicsItem* item, dead) {
             removeItem(item);
             delete item;
@@ -111,32 +146,28 @@ public slots:
         addGithub();
     }
 protected:
-    void keyPressEvent(QKeyEvent* e) override {
+    void keyPressEvent(QKeyEvent* event) override {
         if(mFighter.isActive())
-        switch (e->key()) {
-        case Qt::Key_Up:
-            mFighter.moveBy(0, -Speed);
-            break;
-        case Qt::Key_Down:
-            mFighter.moveBy(0, Speed);
-            break;
-        case Qt::Key_Left:
-            mFighter.moveBy(-Speed, 0);
-            break;
-        case Qt::Key_Right:
-            mFighter.moveBy(Speed, 0);
-            break;
-        case Qt::Key_X:
-            addBullet();
-            break;
-        default:
-            break;
-        }
+            if(event->key() == Qt::Key_Up ||
+               event->key() == Qt::Key_Down ||
+               event->key() == Qt::Key_Left ||
+               event->key() == Qt::Key_Right ||
+               event->key() == Qt::Key_X)
+                mPressedKeys += event->key();
+    }
+    void keyReleaseEvent(QKeyEvent *event) override {
+        if( event->key() == Qt::Key_Up ||
+            event->key() == Qt::Key_Down ||
+            event->key() == Qt::Key_Left ||
+            event->key() == Qt::Key_Right ||
+            event->key() == Qt::Key_X)
+            mPressedKeys -= event->key();
     }
 private:
     QTimer              mClock;
-    Fighter            mFighter;
+    Fighter             mFighter;
     int                 mG;
+    QSet<int>           mPressedKeys;
 
     void addBullet() {
         addItem(mFighter.attack());
@@ -164,6 +195,7 @@ public:
     Scene           mScene;
 protected:
     void resizeEvent(QResizeEvent* e);
+    void showEvent(QShowEvent* e);
 };
 
 #endif // MAINWINDOW_H
