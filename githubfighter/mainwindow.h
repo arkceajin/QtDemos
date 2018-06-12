@@ -86,6 +86,10 @@ public:
             qApp->quit();
     }
 
+    inline bool started() const {
+        return mClock.isActive();
+    }
+
 protected:
     void keyPressEvent(QKeyEvent* event) override {
         if(event->key() == Qt::Key_Up ||
@@ -117,7 +121,6 @@ private:
     Fighter*            mFighter;
     int                 mG;
     int                 mScore;
-
     QSet<int>           mPressedKeys;
 
     void addFighter() {
@@ -216,7 +219,17 @@ private:
 
         mFighter->moveBy(sceneRect(), offset);
     }
+};
 
+class GraphicsView : public QGraphicsView
+{
+    using QGraphicsView::QGraphicsView;
+protected:
+    void resizeEvent(QResizeEvent* e) {
+        Q_UNUSED(e)
+        if(scene() != Q_NULLPTR)
+            scene()->setSceneRect(0, 0, contentsRect().width(), contentsRect().height());
+    }
 };
 
 class MainWindow : public QMainWindow
@@ -227,11 +240,8 @@ public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    QGraphicsView   mView;
     Scene           mScene;
-protected:
-    void resizeEvent(QResizeEvent* e);
-    void showEvent(QShowEvent* e);
+    GraphicsView    mView;
 };
 
 #endif // MAINWINDOW_H

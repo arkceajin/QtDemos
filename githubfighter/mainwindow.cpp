@@ -5,10 +5,11 @@
 #define Start "Start"
 #define Stop "Stop"
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
+MainWindow::MainWindow(QWidget *parent) :
+    QMainWindow(parent),
+    mScene(),
+    mView(&mScene)
 {
-    mView.setScene(&mScene);
     QPushButton* b = new QPushButton(Start);
     setCentralWidget(new QWidget(this));
     QVBoxLayout* v = new QVBoxLayout;
@@ -30,13 +31,4 @@ MainWindow::MainWindow(QWidget *parent)
 }
 
 MainWindow::~MainWindow()
-{
-
-}
-
-void MainWindow::resizeEvent(QResizeEvent *e)
-{
-    QMainWindow::resizeEvent(e);
-    mScene.setSceneRect(0, 0, mView.width(), mView.height());
-}
-
+{}
