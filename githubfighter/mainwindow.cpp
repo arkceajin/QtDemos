@@ -3,9 +3,9 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    resize(800, 600);
     mView.setScene(&mScene);
     setCentralWidget(&mView);
+    resize(800, 600);
 }
 
 MainWindow::~MainWindow()
