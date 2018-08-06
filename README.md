@@ -12,3 +12,6 @@ From: https://stackoverflow.com/questions/49867207/how-do-i-change-the-state-of-
 
 ### 4. Github Fighter(Shooting game)
 From: https://stackoverflow.com/questions/50753042/qgraphicspixmapitem-collision-detect-no-match-for-operator-operand-type-is
+
+### 5. QmlObjectList
+I found that exposes a list of the data structure from C++ to QML almost appears all my programs using `QAbstractListModel`. So for convenience, I made the reusable class `QmlObjectList` which contains a list of smart pointers of `QObject`. Using just like the `QVector`.
