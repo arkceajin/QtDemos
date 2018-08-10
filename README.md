@@ -43,4 +43,4 @@ Using the `list` just same as a combination of `QVector` & `QAbstractListModel`
 ### 6. QML Garbage Collection
 From: https://stackoverflow.com/questions/51729672/what-are-the-rules-for-a-c-object-returned-from-a-q-invokable-to-be-owned-and
 
-GC is not the smart pointer. When the object's reference count becomes zero, QML GC will destroy the object which returns from `Q_INVOKABLE` function except `CppOwnership`. But not immediately. GC.
+QML GC is not the smart pointer. When the object's reference count becomes zero, QML GC will destroy the object which returns from `Q_INVOKABLE` function except `CppOwnership`. But not immediately. 
