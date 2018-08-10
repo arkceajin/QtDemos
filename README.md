@@ -39,3 +39,8 @@ Using the `list` just same as a combination of `QVector` & `QAbstractListModel`
     QmlObjectList* list = QmlObjectList::create<Human>();
     list->append(new Human("A", 12));
     list->append(new Human("B", 13));
+
+### 6. QML Garbage Collection
+From: https://stackoverflow.com/questions/51729672/what-are-the-rules-for-a-c-object-returned-from-a-q-invokable-to-be-owned-and
+
+GC is not the smart pointer. When the object's reference count becomes zero, QML GC will destroy the object which returns from `Q_INVOKABLE` function except `CppOwnership`. But not immediately. GC.
