@@ -106,10 +106,8 @@ void QtOpenCVCam::stop()
 
 void QtOpenCVCam::renderFrame(const QImage &frame)
 {
-    QImage i = frame.copy();
-    i.fill(Qt::red);
     if(mVideoSurface)
-        mVideoSurface->present(QVideoFrame(i));
+        mVideoSurface->present(QVideoFrame(frame));
     emit captured(frame);
 }
 
