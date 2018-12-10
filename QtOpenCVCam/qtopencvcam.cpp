@@ -18,7 +18,7 @@ QImage mat2QImage(const cv::Mat& mat)
     cv::cvtColor(mat, temp, cv::COLOR_RGB2BGR);
     return QImage(static_cast<const uchar*>(temp.data),
                   mat.cols, mat.rows, mat.step,
-                  QImage::Format_RGB888).copy();
+                  QImage::Format_RGB888).copy().convertToFormat(QImage::Format_RGB32);
 }
 
 class StreamProcess: public QThread
