@@ -14,6 +14,7 @@ From: https://stackoverflow.com/questions/49867207/how-do-i-change-the-state-of-
 From: https://stackoverflow.com/questions/50753042/qgraphicspixmapitem-collision-detect-no-match-for-operator-operand-type-is
 
 ### 5. [QmlObjectList](https://github.com/arkceajin/QtDemos/tree/master/QmlObjectList)
+A list template for QML & C++
 
 ### 6. [QML Garbage Collection](https://github.com/arkceajin/QtDemos/tree/master/qml-gc)
 From: https://stackoverflow.com/questions/51729672/what-are-the-rules-for-a-c-object-returned-from-a-q-invokable-to-be-owned-and
