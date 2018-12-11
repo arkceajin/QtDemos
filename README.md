@@ -14,36 +14,9 @@ From: https://stackoverflow.com/questions/49867207/how-do-i-change-the-state-of-
 From: https://stackoverflow.com/questions/50753042/qgraphicspixmapitem-collision-detect-no-match-for-operator-operand-type-is
 
 ### 5. [QmlObjectList](https://github.com/arkceajin/QtDemos/tree/master/QmlObjectList)
-I found that exposes a list of the data structure from C++ to QML almost appears all my programs using `QAbstractListModel`. So for convenience, I made the reusable class `QmlObjectList` which contains a list of smart pointers of `QObject`. Using just like the `QVector`.
-
-For example the data structure like below:
-
-    class Human : public QObject
-    {
-        Q_OBJECT
-        Q_PROPERTY(QString name MEMBER name)
-        Q_PROPERTY(int age MEMBER age)
-    public:
-        Q_INVOKABLE Human(QString name = QString(),
-                          int age = 0) : QObject(),
-            name(name),
-            age(age)
-        { }
-    private:
-        QString name;
-        int     age;
-    };
-
-Using the `list` just same as a combination of `QVector` & `QAbstractListModel`
-
-    QmlObjectList* list = QmlObjectList::create<Human>();
-    list->append(new Human("A", 12));
-    list->append(new Human("B", 13));
 
 ### 6. [QML Garbage Collection](https://github.com/arkceajin/QtDemos/tree/master/qml-gc)
 From: https://stackoverflow.com/questions/51729672/what-are-the-rules-for-a-c-object-returned-from-a-q-invokable-to-be-owned-and
-
-QML GC is not the smart pointer. When the object's reference count becomes zero, QML GC will destroy the object which returns from `Q_INVOKABLE` function except `CppOwnership`. But not immediately. 
 
 ### 7. [Qt OpenCV Camera](https://github.com/arkceajin/QtDemos/tree/master/QtOpenCVCam)
 From: https://stackoverflow.com/questions/53636279/problem-on-displaying-live-video-in-qt-c-application/
