@@ -1,19 +1,19 @@
 # QtDemos
 This is the collection of Qt demos to solve the problem from `StackOverflow` or I faced.
 
-### 1. [Image Slider](https://github.com/arkceajin/QtDemos/ImageSlider)
+### 1. [Image Slider](https://github.com/arkceajin/QtDemos/tree/master/ImageSlider)
 From: https://stackoverflow.com/questions/49568486/preview-image-on-slider-of-videoplayer
 
-### 2. [Responsive Layout](https://github.com/arkceajin/QtDemos/ResponsiveLayout)
+### 2. [Responsive Layout](https://github.com/arkceajin/QtDemos/tree/master/ResponsiveLayout)
 From: https://stackoverflow.com/questions/49745226/create-a-responsive-ui-like-telegram-using-qt-quick-and-qml
 
-### 3. [Colorize Progress Bar](https://github.com/arkceajin/QtDemos/ColorizeProgressBar)
+### 3. [Colorize Progress Bar](https://github.com/arkceajin/QtDemos/tree/master/ColorizeProgressBar)
 From: https://stackoverflow.com/questions/49867207/how-do-i-change-the-state-of-a-qprogressbar
 
-### 4. [Github Fighter(Shooting game)](https://github.com/arkceajin/QtDemos/githubfighter)
+### 4. [Github Fighter(Shooting game)](https://github.com/arkceajin/QtDemos/tree/master/githubfighter)
 From: https://stackoverflow.com/questions/50753042/qgraphicspixmapitem-collision-detect-no-match-for-operator-operand-type-is
 
-### 5. [QmlObjectList](https://github.com/arkceajin/QtDemos/QmlObjectList)
+### 5. [QmlObjectList](https://github.com/arkceajin/QtDemos/tree/master/QmlObjectList)
 I found that exposes a list of the data structure from C++ to QML almost appears all my programs using `QAbstractListModel`. So for convenience, I made the reusable class `QmlObjectList` which contains a list of smart pointers of `QObject`. Using just like the `QVector`.
 
 For example the data structure like below:
@@ -40,10 +40,10 @@ Using the `list` just same as a combination of `QVector` & `QAbstractListModel`
     list->append(new Human("A", 12));
     list->append(new Human("B", 13));
 
-### 6. [QML Garbage Collection](https://github.com/arkceajin/QtDemos/qml-gc)
+### 6. [QML Garbage Collection](https://github.com/arkceajin/QtDemos/tree/master/qml-gc)
 From: https://stackoverflow.com/questions/51729672/what-are-the-rules-for-a-c-object-returned-from-a-q-invokable-to-be-owned-and
 
 QML GC is not the smart pointer. When the object's reference count becomes zero, QML GC will destroy the object which returns from `Q_INVOKABLE` function except `CppOwnership`. But not immediately. 
 
-### 7. [Qt OpenCV Camera](https://github.com/arkceajin/QtDemos/QtOpenCVCam)
+### 7. [Qt OpenCV Camera](https://github.com/arkceajin/QtDemos/tree/master/QtOpenCVCam)
 From: https://stackoverflow.com/questions/53636279/problem-on-displaying-live-video-in-qt-c-application/
