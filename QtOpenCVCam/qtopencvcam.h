@@ -18,7 +18,7 @@ class QtOpenCVCam : public QObject
     Q_OBJECT
     Q_PROPERTY(QAbstractVideoSurface *videoSurface READ videoSurface \
                WRITE setVideoSurface NOTIFY videoSurfaceChanged)
-    Q_PROPERTY(QSize size READ size WRITE setSize NOTIFY sizeChanged)
+    Q_PROPERTY(QSize size READ size NOTIFY sizeChanged)
 public:
     explicit QtOpenCVCam(int index = 0, QObject *parent = nullptr);
     ~QtOpenCVCam();
