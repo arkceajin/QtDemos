@@ -47,9 +47,9 @@ private:
 
 #include "qtopencvcam.moc"
 
-QtOpenCVCam::QtOpenCVCam(QObject *parent) :
+QtOpenCVCam::QtOpenCVCam(int index, QObject *parent) :
     QObject(parent),
-    mCap(0),
+    mCap(index),
     mStream(new StreamProcess(&mCap, this)),
     mVideoSurface(nullptr),
     mSize()
@@ -88,15 +88,14 @@ void QtOpenCVCam::start()
 
     if(!mVideoSurface)
         return;
-    mSize.setWidth(mCap.get(cv::CAP_PROP_FRAME_WIDTH));
-    mSize.setHeight(mCap.get(cv::CAP_PROP_FRAME_HEIGHT));
+    setSize(QSize(mCap.get(cv::CAP_PROP_FRAME_WIDTH), mCap.get(cv::CAP_PROP_FRAME_HEIGHT)));
     const QVideoFrame::PixelFormat& pixelFormat = QVideoFrame::pixelFormatFromImageFormat(QImage::Format_RGB32);
-    mVideoSurface->start(QVideoSurfaceFormat(mSize, pixelFormat));
+    mVideoSurface->start(QVideoSurfaceFormat(size(), pixelFormat));
 }
 
 void QtOpenCVCam::stop()
 {
-    mSize = QSize();
+    setSize(QSize());
     mStream->terminate();
     mStream->wait();
 
@@ -106,8 +105,26 @@ void QtOpenCVCam::stop()
 
 void QtOpenCVCam::renderFrame(const QImage &frame)
 {
-    if(mVideoSurface)
-        mVideoSurface->present(QVideoFrame(frame));
+    if(mVideoSurface) {
+        if(!mVideoSurface->present(QVideoFrame(frame)))
+            qWarning("Can't render frame on the surface");
+        else
+            qWarning()<<"rendering"<<frame;
+    }
     emit captured(frame);
+}
+
+QSize QtOpenCVCam::size() const
+{
+    return mSize;
+}
+
+void QtOpenCVCam::setSize(const QSize &size)
+{
+    if(mSize == size)
+        return;
+
+    mSize = size;
+    emit sizeChanged();
 }
 
