@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>CropBox/CoverShader.qml</file>
+        <file>CropBox/CropBox.qml</file>
+        <file>CropBox/DragSpot.qml</file>
+        <file>sample.jpg</file>
+    </qresource>
+</RCC>
