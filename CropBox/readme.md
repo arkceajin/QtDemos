@@ -1,6 +1,7 @@
 # Crop Box
 
-The CropBox is a externl QML UI component, basicly like the box shows when you using tools like PhotoShop or screenshot.
+The **CropBox** is an external QML UI component, it basically looks like the box shows when you using tool's marquee like the PhotoShop or the Windows Screenshot.
+Use it just `import` the `CropBox` folder into your project, and put `CropBox` cover the item which you want to crop.
 ![text](./demo.gif)
 
-Thanks @eyllanesc's answer in SO.
+Thanks, @eyllanesc's answer in SO.
