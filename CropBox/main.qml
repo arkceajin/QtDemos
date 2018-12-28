@@ -8,12 +8,22 @@ Window {
     height: 480
     title: qsTr("Hello World")
 
-    Image {
+    Column{
         anchors.centerIn: parent
-        source: "sample.jpg"
-
-        CropBox {
-            anchors.fill: parent
+        Text {
+            id: test
+        }
+        Image {
+            source: "sample.jpg"
+            CropBox {
+                anchors.fill: parent
+                onCropRectChanged: {
+                    test.text = " x:" + cropRect.x +
+                                " y:" + cropRect.y +
+                                " w:" + cropRect.width +
+                                " h:" + cropRect.height
+                }
+            }
         }
     }
 }
