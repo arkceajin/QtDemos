@@ -21,3 +21,6 @@ From: https://stackoverflow.com/questions/51729672/what-are-the-rules-for-a-c-ob
 
 ### 7. [Qt OpenCV Camera](https://github.com/arkceajin/QtDemos/tree/master/QtOpenCVCam)
 From: https://stackoverflow.com/questions/53636279/problem-on-displaying-live-video-in-qt-c-application/
+
+### 8. [QML Crop Box](https://github.com/arkceajin/QtDemos/tree/master/CropBox)
+From: https://stackoverflow.com/questions/53939313/how-to-make-part-of-area-transparent-and-the-rest-show-semitransparent
