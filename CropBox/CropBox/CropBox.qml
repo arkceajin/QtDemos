@@ -1,30 +1,65 @@
 import QtQuick 2.12
 
 Item {
-    readonly property color coverColor: "#ccc"
-    readonly property double coverOpacity: 0.6
-    readonly property color spotColor: "#555"
-    readonly property color dragColor: "#6c2"
-    readonly property int spotRadius: 10
-    readonly property int spotOffset: spotRadius / -2
-    readonly property int minArea: 50
+    id: cropBox
+    property color coverColor: "#ccc"
+    property double coverOpacity: 0.6
+    property color spotColor: "#555"
+    property color dragColor: "#6c2"
+    property int spotRadius: 10
+    property int spotOffset: spotRadius / -2
+    property int minArea: 50
+    property alias rectDraggable: dragRect.enabled
     readonly property alias cropRect: cover.cropRect
+
+    /**
+      * @breif set the cropRect
+      * @param r new cropRect
+      */
+    function setRect(r) {
+        topLeft.x = r.x + spotOffset
+        topLeft.y = r.y + spotOffset
+
+        topRight.x = r.x + r.width + spotOffset
+        topRight.y = r.y + spotOffset
+
+        bottomLeft.x = r.x + spotOffset
+        bottomLeft.y = r.y + r.height + spotOffset
+
+        bottomRight.x = r.x + r.width + spotOffset
+        bottomRight.y = r.y + r.height + spotOffset
+    }
 
     Rectangle {
         id: cover
         color: coverColor
         opacity: coverOpacity
         anchors.fill: parent
-        property rect cropRect: Qt.rect(topLeft.x - spotOffset,
-                                          topLeft.y - spotOffset,
-                                          bottomRight.x - topLeft.x,
-                                          bottomRight.y - topLeft.y)
+        property rect cropRect: Qt.rect(topLeft.x - spotOffset, topLeft.y - spotOffset,
+                                        bottomRight.x - topLeft.x, bottomRight.y - topLeft.y)
 
         layer.enabled: true
         layer.effect: CoverShader {
             sourceRect: cover.cropRect
             xStep: 1 / cover.width
             yStep: 1 / cover.height
+        }
+    }
+
+    Item {
+        id: dragRect
+        x: cropRect.x
+        y: cropRect.y
+        width: cropRect.width
+        height: cropRect.height
+        DragHandler{
+            xAxis.minimum: 0
+            yAxis.minimum: 0
+            xAxis.maximum: cropBox.width - cropRect.width
+            yAxis.maximum: cropBox.height - cropRect.height
+            onTranslationChanged: {
+                setRect(Qt.rect(parent.x, parent.y, cropRect.width, cropRect.height))
+            }
         }
     }
 
