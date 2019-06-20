@@ -1,0 +1,40 @@
+Explanation
+
+> The application window should sized at 1920 x 720 px
+Set the QML with fixed size and make it show as frameless window.
+
+> The background should fill the entire application window (1920 * 720)
+The background image is same size as the main windows, so nothing need to do.
+
+> The gauge should be placed to the center of window
+Using anchor.centerIn property
+
+> The needle tip should touch the outer ring of the gauge
+The height of needle image is same as the raduis of the gauge.
+So make the needle image's Top position same as the Center position of gauge image.
+
+> Text should be centered within the inner gauge ring
+Using horizontalAlignment and verticalAlignment property
+
+> Text should use the either one of the provided DejaVuSansMono fonts
+Load the font file by QML FontLoader
+
+> The needle movement needs to be animated
+Export C++ QPropertyAnimation to QML, because it can control the direction of the animation.
+
+> Needle changes its color from green to red when the rpm exceeds 6500 rpm.
+When the program loaded, if the red needle does not exist, 
+then it will be generated base on the green needle.
+(But if possible I think to create the red needle using Photoshop shall be better)
+
+> Speed should increase or decrease in relation to rpm
+> When the application is started the indicated speed should be 0 km/h and rpm 0
+> Implement a logic that for accelerating or decelerating based on key presses
+So the gauge can be considered as a model having 3 functions, increase, decrease and stop.
+And having a property like speed(rpm), max speed...
+Then listen the Key and trigger the function.
+The model makes GUI perform as
+increase: Play(resume) animation forward
+decrease: Play(resume) animation backward
+stop: Stop animation
+
