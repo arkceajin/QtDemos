@@ -24,3 +24,6 @@ From: https://stackoverflow.com/questions/53636279/problem-on-displaying-live-vi
 
 ### 8. [QML Crop Box](https://github.com/arkceajin/QtDemos/tree/master/CropBox)
 From: https://stackoverflow.com/questions/53939313/how-to-make-part-of-area-transparent-and-the-rest-show-semitransparent
+
+### 8. [Control ScrollView's ScrollBar](https://github.com/arkceajin/QtDemos/tree/master/ScrollView2)
+From: https://stackoverflow.com/questions/30359262/how-to-scroll-qml-scrollview-to-center
