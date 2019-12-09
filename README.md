@@ -27,3 +27,6 @@ From: https://stackoverflow.com/questions/53939313/how-to-make-part-of-area-tran
 
 ### 9. [Control ScrollView's ScrollBar](https://github.com/arkceajin/QtDemos/tree/master/ScrollView2)
 From: https://stackoverflow.com/questions/30359262/how-to-scroll-qml-scrollview-to-center
+
+### 10. [Flickable TextInput](https://github.com/arkceajin/QtDemos/tree/master/FlickableInput)
+From: https://forum.qt.io/topic/109393/scrolling-inside-text-field
