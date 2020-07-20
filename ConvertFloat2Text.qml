@@ -17,5 +17,6 @@
         }
     }
     
+// Unlike `https://jsperf.com/truncating-decimals` shows the fastest was `~~`, ` | 0` is the fastest way in the QML
 // test ~~: 466ms
 // test | 0: 33ms
