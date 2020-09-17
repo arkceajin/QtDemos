@@ -6,7 +6,6 @@
 CircleItem::CircleItem()
 {
     setFlag(ItemHasContents);
-    //setAntialiasing(true);
 }
 
 QSGNode *CircleItem::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeData *)
@@ -19,7 +18,7 @@ QSGNode *CircleItem::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNo
         node = new QSGGeometryNode;
         geometry = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 0);
         geometry->setLineWidth(lineWidth());
-        geometry->setDrawingMode(QSGGeometry::DrawLineStrip);
+        geometry->setDrawingMode(QSGGeometry::DrawPoints);
         node->setGeometry(geometry);
         node->setFlag(QSGNode::OwnsGeometry);
         material = new QSGFlatColorMaterial;
@@ -32,15 +31,13 @@ QSGNode *CircleItem::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNo
     }
     material->setColor(color());
 
-    const int& countPoints = static_cast<int>((angle() / 360.0) * vertex());
-
     if (m_updateVertex) {
         updateVertexData();
         m_updateVertex = false;
     }
 
+    const int& countPoints = static_cast<int>((sweepAngle() / 360.0) * vertex());
     geometry->allocate(countPoints, 0);
-
     std::copy(m_vertexBuffer.begin(), m_vertexBuffer.begin() + countPoints, geometry->vertexDataAsPoint2D());
 
     // Notify all the drawers of the node geometry change
@@ -54,20 +51,20 @@ void CircleItem::registerType()
     qmlRegisterType<CircleItem>("CircleItem", 1, 0, "CircleItem");
 }
 
-float CircleItem::angle() const
+float CircleItem::sweepAngle() const
 {
-    return m_angle;
+    return m_sweepAngle;
 }
 
-void CircleItem::setAngle(const float &angle)
+void CircleItem::setSweepAngle(const float &sweepAngle)
 {
-    if (isnanf(angle))
+    if (std::isnan(sweepAngle))
         return;
-    m_angle = fmod(angle, 360);
-    if (m_angle < 0)
-        m_angle += 360;
+    m_sweepAngle = fmod(sweepAngle, 360);
+    if (m_sweepAngle < 0)
+        m_sweepAngle += 360;
     update();
-    emit angleChanged();
+    emit sweepAngleChanged();
 }
 
 float CircleItem::startAngle() const
@@ -77,12 +74,11 @@ float CircleItem::startAngle() const
 
 void CircleItem::setStartAngle(const float &startAngle)
 {
-    if (isnanf(startAngle))
+    if (std::isnan(startAngle))
         return;
     m_startAngle = fmod(startAngle, 360);
     if (m_startAngle < 0)
         m_startAngle += 360;
-    m_startAngle = startAngle;
     m_updateVertex = true;
     update();
     emit startAngleChanged();
@@ -125,19 +121,6 @@ void CircleItem::setColor(const QColor &color)
     emit colorChanged();
 }
 
-float CircleItem::radius() const
-{
-    return m_radius;
-}
-
-void CircleItem::setRadius(float radius)
-{
-    m_radius = radius;
-    m_updateVertex = true;
-    update();
-    emit radiusChanged();
-}
-
 int CircleItem::vertex() const
 {
     return m_vertexBuffer.size();
@@ -151,10 +134,36 @@ void CircleItem::setVertex(int vertex)
     emit vertexChanged();
 }
 
+QPointF CircleItem::center() const
+{
+    return m_center;
+}
+
+void CircleItem::setCenter(const QPointF &center)
+{
+    m_center = center;
+    m_updateVertex = true;
+    update();
+    emit centerChanged();
+}
+
+QPointF CircleItem::radius() const
+{
+    return m_radius;
+}
+
+void CircleItem::setRadius(const QPointF &radius)
+{
+    m_radius = radius;
+    m_updateVertex = true;
+    update();
+    emit radiusChanged();
+}
+
 void CircleItem::updateVertexData()
 {
     for (int i = 0; i < vertex(); ++i) {
-        const float& rad = (((float)i / vertex()) * 360.0 - startAngle()) * (M_PI / 180.0) * (clockwise()? -1: 1);
-        m_vertexBuffer[i].set(std::sin(rad) * radius() + width() / 2.0, std::cos(rad) * radius() + height() / 2.0);
+        const float& rad = (((float)i / vertex()) * 360.0 - m_startAngle) * (M_PI / 180.0) * (m_clockwise? -1: 1);
+        m_vertexBuffer[i].set(std::sin(rad) * m_radius.x() + m_center.x(), std::cos(rad) * m_radius.y() + m_center.y());
     }
 }
